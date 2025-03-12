@@ -1,23 +1,35 @@
 import { ChangeEvent, useEffect, useId, useRef, useState } from "react";
-import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
-import { RiCloseLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { checkTodo, editTodo, removeTodo } from "../redux/todoSlice";
 import { ITodo } from "../types/todo";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
+import { motion } from "framer-motion";
+import { useReward } from "react-rewards";
 
 export function ToDoOption({ id, text, checked }: ITodo) {
   const checkboxId = useId();
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isRemoved, setIsRemoved] = useState(false);
+  const { reward } = useReward("swipeDelete", "balloons", {
+    elementCount: 1,
+    position: "absolute",
+  });
 
   const handleCheck = () => {
     dispatch(checkTodo(id));
   };
 
-  const handleRemove = () => {
-    dispatch(removeTodo(id));
+  const handleDragEnd = (
+    _: MouseEvent | TouchEvent | PointerEvent,
+    info: { offset: { x: number } }
+  ) => {
+    if (info.offset.x > 100 || info.offset.x < -100) {
+      setIsRemoved(true);
+      dispatch(removeTodo(id));
+      reward();
+    }
   };
 
   const handleEditTodo = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,8 +43,20 @@ export function ToDoOption({ id, text, checked }: ITodo) {
   }, [isEditing]);
 
   return (
-    <li>
-      <div className="flex items-start justify-between">
+    <motion.li
+      initial={{ y: 200, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="overflow-x-hidden"
+    >
+      <motion.div
+        className="flex items-start justify-between"
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        onDragEnd={handleDragEnd}
+        animate={{ opacity: isRemoved ? 0 : 1, x: isRemoved ? 200 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="flex flex-row items-start gap-2 ml-1">
           <label htmlFor={checkboxId}>
             {!checked ? (
@@ -78,14 +102,8 @@ export function ToDoOption({ id, text, checked }: ITodo) {
             {!isEditing && <span className="break-all ">{text}</span>}
           </div>
         </div>
-
-        <RiCloseLine
-          className="mr-1"
-          color="red"
-          size={20}
-          onClick={handleRemove}
-        />
-      </div>
-    </li>
+      </motion.div>
+      <span id="swipeDelete" />
+    </motion.li>
   );
 }

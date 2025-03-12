@@ -1,8 +1,11 @@
 export * from "../types/todo";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ITodo } from "../types/todo";
+import { toast } from "sonner";
 
-const initialState: ITodo[] = [];
+const initialState: ITodo[] = localStorage.getItem("todos")
+  ? JSON.parse(localStorage.getItem("todos")!)
+  : [];
 
 const todoSlice = createSlice({
   name: "todos",
@@ -18,14 +21,19 @@ const todoSlice = createSlice({
       };
 
       state.push(newTodo);
+      localStorage.setItem("todos", JSON.stringify(state));
     },
     removeTodo: (state, action: PayloadAction<string>) => {
-      return state.filter((todo) => todo.id !== action.payload);
+      const newState = state.filter((todo) => todo.id !== action.payload);
+      localStorage.setItem("todos", JSON.stringify(newState));
+
+      return newState;
     },
     checkTodo: (state, action: PayloadAction<string>) => {
       const newState = state.map((todo) =>
         todo.id === action.payload ? { ...todo, checked: !todo.checked } : todo
       );
+      localStorage.setItem("todos", JSON.stringify(newState));
 
       return newState;
     },
@@ -33,15 +41,23 @@ const todoSlice = createSlice({
       state,
       action: PayloadAction<{ id: string; newText: string }>
     ) => {
-      const newState = state.map((todo) => {
-        if (todo.id === action.payload.id) {
-          return { ...todo, text: action.payload.newText };
-        }
+      if (action.payload.newText === "") {
+        const newState = state.filter((todo) => todo.id !== action.payload.id);
+        toast.warning(
+          "Voce apagou todo o conteudo e entao deletamos a nota, se deseja adicionar uma nova use o campo indicado!"
+        );
+        return newState;
+      } else {
+        const newState = state.map((todo) => {
+          if (todo.id === action.payload.id) {
+            return { ...todo, text: action.payload.newText };
+          }
+          return todo;
+        });
 
-        return todo;
-      });
-
-      return newState;
+        localStorage.setItem("todos", JSON.stringify(newState));
+        return newState;
+      }
     },
   },
 });
