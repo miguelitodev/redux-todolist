@@ -28,8 +28,22 @@ const todoSlice = createSlice({
 
       return newState;
     },
+    editTodo: (
+      state,
+      action: PayloadAction<{ oldText: string; newText: string }>
+    ) => {
+      const newState = state.map((todo) => {
+        if (todo.text === action.payload.oldText) {
+          return { ...todo, text: action.payload.newText };
+        }
+
+        return todo;
+      });
+
+      return newState;
+    },
   },
 });
 
-export const { addTodo, removeTodo, checkTodo } = todoSlice.actions;
+export const { addTodo, removeTodo, checkTodo, editTodo } = todoSlice.actions;
 export default todoSlice.reducer;

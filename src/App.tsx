@@ -19,8 +19,6 @@ function App() {
     [newToDo, dispatch]
   );
 
-  console.log(todos);
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewToDo(e.target.value);
   };
