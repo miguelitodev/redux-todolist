@@ -8,7 +8,12 @@ function App() {
         <Toaster richColors position="top-center" />
       </div>
       <Form />
-      <span className="text-xs opacity-50 p-3">Made by Miguel Riquelme</span>
+      <span className="text-xs opacity-50 p-3">
+        Made by{" "}
+        <a className="font-bold" href="https://miguelito.dev">
+          Miguel Riquelme
+        </a>
+      </span>
     </main>
   );
 }

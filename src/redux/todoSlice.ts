@@ -44,7 +44,7 @@ const todoSlice = createSlice({
       if (action.payload.newText === "") {
         const newState = state.filter((todo) => todo.id !== action.payload.id);
         toast.warning(
-          "Voce apagou todo o conteudo e entao deletamos a nota, se deseja adicionar uma nova use o campo indicado!"
+          "Você apagou todo o conteúdo, então deletamos a nota. Se deseja adicionar uma nova, use o campo indicado!"
         );
         return newState;
       } else {

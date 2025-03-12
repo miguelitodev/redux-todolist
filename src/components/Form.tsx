@@ -28,13 +28,13 @@ export function Form() {
       e.preventDefault();
 
       if (newToDo === "" || !newToDo || newToDo === undefined) {
-        toast.error("Precisa escrever algo antes de adicionar!");
+        toast.error("É necessário escrever algo antes de adicionar!");
         return;
       }
 
       if (todos.find((todo) => todo.text === newToDo)) {
         toast.warning(
-          "Voce ja tem essa tarefa adicionada na lista! Por favor tente outra!"
+          "Você já tem essa tarefa adicionada à lista! Por favor, tente outra."
         );
         return;
       }
