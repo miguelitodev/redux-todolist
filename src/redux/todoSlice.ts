@@ -8,32 +8,33 @@ const todoSlice = createSlice({
   name: "todos",
   initialState,
   reducers: {
-    addTodo: (state, action: PayloadAction<string>) => {
+    addTodo: (state, action: PayloadAction<{ text: string; id: string }>) => {
+      const { id, text } = action.payload;
+
       const newTodo: ITodo = {
-        text: action.payload,
+        id,
+        text,
         checked: false,
       };
 
       state.push(newTodo);
     },
     removeTodo: (state, action: PayloadAction<string>) => {
-      return state.filter((todo) => todo.text !== action.payload);
+      return state.filter((todo) => todo.id !== action.payload);
     },
     checkTodo: (state, action: PayloadAction<string>) => {
       const newState = state.map((todo) =>
-        todo.text === action.payload
-          ? { ...todo, checked: !todo.checked }
-          : todo
+        todo.id === action.payload ? { ...todo, checked: !todo.checked } : todo
       );
 
       return newState;
     },
     editTodo: (
       state,
-      action: PayloadAction<{ oldText: string; newText: string }>
+      action: PayloadAction<{ id: string; newText: string }>
     ) => {
       const newState = state.map((todo) => {
-        if (todo.text === action.payload.oldText) {
+        if (todo.id === action.payload.id) {
           return { ...todo, text: action.payload.newText };
         }
 

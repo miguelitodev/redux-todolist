@@ -4,23 +4,24 @@ import { RiCloseLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { checkTodo, editTodo, removeTodo } from "../redux/todoSlice";
 import { ITodo } from "../types/todo";
+import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 
-export function ToDoOption({ text, checked }: ITodo) {
+export function ToDoOption({ id, text, checked }: ITodo) {
   const checkboxId = useId();
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleCheck = () => {
-    dispatch(checkTodo(text));
+    dispatch(checkTodo(id));
   };
 
   const handleRemove = () => {
-    dispatch(removeTodo(text));
+    dispatch(removeTodo(id));
   };
 
   const handleEditTodo = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(editTodo({ oldText: text, newText: e.target.value }));
+    dispatch(editTodo({ id, newText: e.target.value }));
   };
 
   useEffect(() => {
@@ -32,12 +33,18 @@ export function ToDoOption({ text, checked }: ITodo) {
   return (
     <li>
       <div className="flex items-start justify-between">
-        <div className="flex flex-row items-start">
+        <div className="flex flex-row items-start gap-2 ml-1">
           <label htmlFor={checkboxId}>
             {!checked ? (
-              <BiCheckbox size={40} />
+              <ImCheckboxUnchecked
+                size={25}
+                className="opacity-50 cursor-pointer"
+              />
             ) : (
-              <BiCheckboxChecked size={40} />
+              <ImCheckboxChecked
+                size={25}
+                className="text-green-500 cursor-pointer"
+              />
             )}
           </label>
 
@@ -50,7 +57,7 @@ export function ToDoOption({ text, checked }: ITodo) {
           />
 
           <div
-            className="w-72 mt-2"
+            className="w-72 "
             onClick={() => {
               setIsEditing(true);
             }}
@@ -73,7 +80,7 @@ export function ToDoOption({ text, checked }: ITodo) {
         </div>
 
         <RiCloseLine
-          className="mt-2"
+          className="mr-1"
           color="red"
           size={20}
           onClick={handleRemove}
