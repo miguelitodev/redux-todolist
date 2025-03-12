@@ -81,7 +81,7 @@ export function ToDoOption({ id, text, checked }: ITodo) {
           />
 
           <div
-            className="w-72 "
+            className="w-72 max-lg:w-full"
             onClick={() => {
               setIsEditing(true);
             }}
@@ -92,14 +92,14 @@ export function ToDoOption({ id, text, checked }: ITodo) {
             {isEditing && (
               <input
                 ref={inputRef}
-                className="w-72 outline-0 break-words"
+                className="w-72 max-lg:w-full outline-0"
                 value={text}
                 type="text"
                 onChange={handleEditTodo}
               />
             )}
 
-            {!isEditing && <span className="break-all ">{text}</span>}
+            {!isEditing && <span className="break-all">{text}</span>}
           </div>
         </div>
       </motion.div>

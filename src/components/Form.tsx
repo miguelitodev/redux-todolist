@@ -56,9 +56,9 @@ export function Form() {
 
   return (
     <div className="h-[500px]">
-      <div className="w-[400px] text-left flex flex-col gap-6">
+      <div className="w-[400px] max-lg:w-full text-left flex flex-col gap-6">
         <form onSubmit={handleAddToDo} className="flex flex-col gap-2">
-          <div className="flex justify-between items-baseline">
+          <div className="flex justify-between items-baseline max-lg:flex-col">
             <h1 className="text-6xl font-bold text-gray-800 flex gap-2">
               <motion.div
                 initial={{ x: -500, opacity: 0 }}
@@ -91,9 +91,10 @@ export function Form() {
                 ? `Completas: ${
                     todos.filter((todo) => todo.checked).length
                   } / ${todos.length}`
-                : ""}
+                : " "}
             </span>
           </div>
+
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -121,21 +122,25 @@ export function Form() {
           </motion.div>
         </form>
 
-        {todos.length !== 0 && (
-          <div className="flex flex-col gap-2 max-h-[400px] overflow-y-visible scrollbar">
-            <ul className="list-none flex flex-col gap-2">
-              {todos.map((todo) => (
-                <ToDoOption key={todo.id} {...todo} />
-              ))}
-            </ul>
-          </div>
-        )}
+        <div>
+          {todos.length !== 0 && (
+            <div className="flex flex-col gap-2 max-h-[400px] overflow-y-visible scrollbar">
+              <ul className="list-none flex flex-col gap-2">
+                {todos.map((todo) => (
+                  <ToDoOption key={todo.id} {...todo} />
+                ))}
+              </ul>
+            </div>
+          )}
 
-        {todos.length === 0 && (
-          <span className="text-sm text-center opacity-80 text-gray-500">
-            Ops... Parece que não há tarefas ainda. Adicione a primeira!
-          </span>
-        )}
+          {todos.length === 0 && (
+            <div className="w-full text-center">
+              <span className="text-sm  opacity-80 text-gray-500 ">
+                Ops... Parece que não há tarefas ainda.
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

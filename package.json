@@ -1,7 +1,9 @@
 {
-  "name": "redux-todolist",
+  "name": "tuh-doo",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A simple and fun to-do list app",
+  "author": "Miguelito <miguelrisquelme@gmail.com>",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +12,7 @@
     "deploy": "gh-pages -d dist",
     "lint": "eslint .",
     "preview": "vite preview",
-    "homepage": "https://miguelitodev.github.io/redux-todolist"
+    "homepage": "https://miguelitodev.github.io/tuh-doo"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.1",
